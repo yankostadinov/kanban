@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './TaskModal.css';
 
-const TaskModal = ({ onSubmit, lanes }) => {
+const TaskModal = ({ onSubmit, onCancel, lanes }) => {
 	const submitHandler = event => {
 		event.preventDefault();
 		onSubmit({
@@ -20,7 +20,10 @@ const TaskModal = ({ onSubmit, lanes }) => {
 					{lanes.map(lane => <option value={lane.id} key={lane.id}>{lane.title}</option>)}
 				</select>
 			</div>
-			<input type="submit" value="Create task"/>
+			<div className="buttons">
+				<input type="submit" value="Create task"/>
+				<input type="button" value="Cancel" onClick={onCancel} />
+			</div>
 		</form>
 	);
 };
@@ -30,6 +33,7 @@ TaskModal.propTypes = {
 	children: PropTypes.node,
 	lanes: PropTypes.arrayOf(PropTypes.object),
 	onSubmit: PropTypes.func,
+	onCancel: PropTypes.func,
 };
 
 export default TaskModal;

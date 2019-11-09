@@ -93,8 +93,8 @@ class Board extends Component {
 		return (
 			<div id="board">
 				{this.state.adding &&
-					<FullScreenModal>
-						<TaskModal onSubmit={this.addTask} lanes={this.state.lanes} />
+					<FullScreenModal onClose={() => this.setState({ adding: false })}>
+						<TaskModal onSubmit={this.addTask} onCancel={() => this.setState({ adding: false })} lanes={this.state.lanes} />
 					</FullScreenModal>}
 				<div className="buttons">
 					<button onClick={() => this.setState({ adding: true })}>Add task</button>

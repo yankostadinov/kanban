@@ -8,6 +8,6 @@ form .form-details {
 	grid-template-columns: 50% 50%;
 }
 
-form input[type="submit"] {
+form .buttons {
 	margin-top: 10px;
 }
