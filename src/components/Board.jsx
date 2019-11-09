@@ -36,7 +36,7 @@ class Board extends Component {
 		this.setState({ lanes: this.state.lanes.concat(laneResponse.data) });
 	}
 
-	async addTask({ date = Date.now(), lane, subject = 'New Task', assignee = 'Yan Kostadinov' } = {}) {
+	async addTask({ date = Date.now(), lane, subject, assignee } = {}) {
 		const newTask = { date, lane, subject, assignee };
 		const taskResponse = await Axios.post('http://localhost:3000/tasks', newTask);
 
