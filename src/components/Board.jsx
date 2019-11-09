@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import uuid from 'uuid/v4';
+import Axios from 'axios';
 import './Board.css';
 import Lane from './Lane.jsx';
 import FullScreenModal from './FullScreenModal.jsx';
@@ -23,57 +23,34 @@ class Board extends Component {
 	}
 
 	async componentDidMount() {
-		let data;
-		const localData = localStorage.getItem('database');
+		const tasksResponse = await Axios.get('http://localhost:3000/tasks');
+		const lanesResponse = await Axios.get('http://localhost:3000/lanes');
 
-		if (localData) data = JSON.parse(localData);
-		else data = await this.fetchData();
-
-		this.setState(data);
+		this.setState({ lanes: lanesResponse.data, tasks: tasksResponse.data });
 	}
 
-	async fetchData() {
-		const response = await fetch('./api.json');
+	async addLane() {
+		const newLane = { title: 'New Lane', order: this.state.lanes.length + 1 };
+		const laneResponse = await Axios.post('http://localhost:3000/lanes', newLane);
 
-		if (!response.ok) throw Error(response.statusText);
-
-		const json = await response.json();
-
-		return json;
+		this.setState({ lanes: this.state.lanes.concat(laneResponse.data) });
 	}
 
-	componentDidUpdate() {
-		localStorage.setItem('database', JSON.stringify(this.state));
-	}
+	async addTask({ date = Date.now(), lane, subject = 'New Task', assignee = 'Yan Kostadinov' } = {}) {
+		const newTask = { date, lane, subject, assignee };
+		const taskResponse = await Axios.post('http://localhost:3000/tasks', newTask);
 
-	addLane() {
-		const lanes = this.state.lanes.concat({
-			id: uuid(),
-			title: 'New Lane',
-		});
-		this.setState({ lanes });
-	}
-
-	addTask(event) {
-		event.preventDefault();
-
-		const tasks = this.state.tasks.concat({
-			id: uuid(),
-			date: Date.now(),
-			lane: event.target.lane.value,
-			subject: event.target.subject.value || 'New Task',
-			assignee: event.target.assignee.value || 'Yan Kostadinov',
-		});
-		this.setState({ tasks, adding: false });
+		this.setState({ tasks: this.state.tasks.concat(taskResponse.data), adding: false });
 	}
 
 	onLaneDrop(fromId, toId) {
-		const fromIndex = this.state.lanes.findIndex(lane => lane.id === fromId);
-		const toIndex = this.state.lanes.findIndex(lane => lane.id === toId);
-
 		const lanes = this.state.lanes.slice();
-		[lanes[fromIndex], lanes[toIndex]] = [lanes[toIndex], lanes[fromIndex]];
+		const fromLane = lanes.find(lane => lane.id === fromId);
+		const toLane = lanes.find(lane => lane.id === toId);
 
+		[fromLane.order, toLane.order] = [toLane.order, fromLane.order];
+
+		Axios.all([Axios.put(`http://localhost:3000/lanes/${fromLane.id}`, fromLane), Axios.put(`http://localhost:3000/lanes/${toLane.id}`, toLane)]);
 		this.setState({ lanes });
 	}
 
@@ -83,6 +60,7 @@ class Board extends Component {
 
 		taskToMove.lane = newLaneId;
 
+		Axios.put(`http://localhost:3000/tasks/${taskToMove.id}`, taskToMove);
 		this.setState({ tasks });
 	}
 
@@ -104,10 +82,12 @@ class Board extends Component {
 	}
 
 	render() {
-		const lanes = this.state.lanes.map(lane => {
-			const laneTasks = this.state.tasks.filter(task => task.lane === lane.id);
-			return <Lane key={lane.id} id={lane.id} title={lane.title} tasks={laneTasks} onLaneDrop={this.onLaneDrop} onTaskDrop={this.onTaskDrop} onRemove={this.onLaneRemove} onEdit={this.onLaneEdit} />;
-		});
+		const lanes = this.state.lanes.slice()
+			.sort((lane1, lane2) => lane1.order - lane2.order)
+			.map(lane => {
+				const laneTasks = this.state.tasks.filter(task => task.lane === lane.id);
+				return <Lane key={lane.id} id={lane.id} title={lane.title} tasks={laneTasks} onLaneDrop={this.onLaneDrop} onTaskDrop={this.onTaskDrop} onRemove={this.onLaneRemove} onEdit={this.onLaneEdit} />;
+			});
 
 		return (
 			<div id="board">

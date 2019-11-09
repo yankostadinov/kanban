@@ -11,8 +11,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.11.2",
     "@fortawesome/react-fontawesome": "^0.1.7",
     "react": "^16.11.0",
-    "react-dom": "^16.11.0",
-    "uuid": "^3.3.3"
+    "react-dom": "^16.11.0"
   },
   "devDependencies": {
     "@babel/core": "^7.6.4",
@@ -34,6 +33,7 @@
     "build": "webpack --config webpack.dev.js",
     "prod": "webpack --config webpack.prod.js",
     "watch": "webpack --watch --config webpack.dev.js",
-    "start": "webpack-dev-server --open --config webpack.dev.js"
+    "start": "webpack-dev-server --open --config webpack.dev.js",
+    "server": "json-server --watch db.json"
   }
 }

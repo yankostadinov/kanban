@@ -1,0 +1,82 @@
+{
+  "lanes": [
+    {
+      "title": "To Do",
+      "order": 1,
+      "id": 1
+    },
+    {
+      "title": "In Progress",
+      "order": 2,
+      "id": 2
+    },
+    {
+      "title": "Done",
+      "order": 3,
+      "id": 3
+    },
+    {
+      "title": "New Lane",
+      "order": 4,
+      "id": 4
+    }
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "date": 1572805598639,
+      "subject": "Create basic structure",
+      "lane": 3,
+      "assignee": "Yan Kostadinov"
+    },
+    {
+      "id": 2,
+      "date": 1572805598639,
+      "subject": "Save and restore data",
+      "lane": 3,
+      "assignee": "Yan Kostadinov"
+    },
+    {
+      "id": 3,
+      "date": 1572805598639,
+      "subject": "Add lane drag and drop",
+      "lane": 3,
+      "assignee": "Yan Kostadinov"
+    },
+    {
+      "id": 4,
+      "date": 1572805598639,
+      "subject": "Add task drag and drop",
+      "lane": 3,
+      "assignee": "Yan Kostadinov"
+    },
+    {
+      "id": 5,
+      "date": 1572805598639,
+      "subject": "Edit/remove lane",
+      "lane": 3,
+      "assignee": "Yan Kostadinov"
+    },
+    {
+      "id": 6,
+      "date": 1572805598639,
+      "subject": "Add new task button",
+      "lane": 3,
+      "assignee": "Yan Kostadinov"
+    },
+    {
+      "id": 7,
+      "date": 1572805598639,
+      "subject": "Add new task modal",
+      "lane": 1,
+      "assignee": "Yan Kostadinov"
+    },
+    {
+      "id": 8,
+      "date": 1572805598639,
+      "subject": "Edit/remove task",
+      "lane": 1,
+      "assignee": "Yan Kostadinov"
+    }
+  ]
+}

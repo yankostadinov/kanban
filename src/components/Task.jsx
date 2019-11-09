@@ -15,7 +15,7 @@ const Task = ({ id, subject = 'Untitled', assignee = 'Unassigned' }) => {
 
 Task.displayName = 'Task';
 Task.propTypes = {
-	id: PropTypes.string.isRequired,
+	id: PropTypes.number.isRequired,
 	subject: PropTypes.string,
 	assignee: PropTypes.string,
 };
