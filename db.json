@@ -3,22 +3,38 @@
     {
       "title": "To Do",
       "order": 1,
+      "hidden": false,
       "id": 1
     },
     {
       "title": "In Progress",
       "order": 2,
+      "hidden": false,
       "id": 2
     },
     {
       "title": "Done",
       "order": 3,
+      "hidden": false,
       "id": 3
     },
     {
       "title": "New Lane",
       "order": 4,
+      "hidden": true,
       "id": 4
+    },
+    {
+      "title": "New Lane",
+      "order": 5,
+      "id": 5,
+      "hidden": true
+    },
+    {
+      "title": "New Lane",
+      "order": 6,
+      "id": 6,
+      "hidden": true
     }
   ],
   "tasks": [
@@ -68,7 +84,7 @@
       "id": 7,
       "date": 1572805598639,
       "subject": "Add new task modal",
-      "lane": 1,
+      "lane": 3,
       "assignee": "Yan Kostadinov"
     },
     {

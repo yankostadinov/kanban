@@ -19,7 +19,7 @@ class Board extends Component {
 		this.addTask = this.addTask.bind(this);
 		this.onLaneDrop = this.onLaneDrop.bind(this);
 		this.onTaskDrop = this.onTaskDrop.bind(this);
-		this.onLaneRemove = this.onLaneRemove.bind(this);
+		this.onLaneHide = this.onLaneHide.bind(this);
 		this.onLaneEdit = this.onLaneEdit.bind(this);
 	}
 
@@ -65,11 +65,13 @@ class Board extends Component {
 		this.setState({ tasks });
 	}
 
-	onLaneRemove(laneId) {
-		const lanes = this.state.lanes.filter(lane => lane.id !== laneId);
-		const tasks = this.state.tasks.filter(task => task.lane !== laneId);
+	onLaneHide(laneId) {
+		const lanes = this.state.lanes.slice();
+		const laneToHide = lanes.find(lane => lane.id === laneId);
+		laneToHide.hidden = true;
 
-		this.setState({ lanes, tasks });
+		Axios.put(`http://localhost:3000/lanes/${laneId}`, laneToHide);
+		this.setState({ lanes });
 	}
 
 	onLaneEdit(laneId, newTitle) {
@@ -79,15 +81,17 @@ class Board extends Component {
 		const renamedLane = lanes.find(lane => lane.id === laneId);
 		renamedLane.title = newTitle;
 
+		Axios.put(`http://localhost:3000/lanes/${laneId}`, renamedLane);
 		this.setState({ lanes });
 	}
 
 	render() {
-		const lanes = this.state.lanes.slice()
+		const lanes = this.state.lanes
+			.filter(lane => !lane.hidden)
 			.sort((lane1, lane2) => lane1.order - lane2.order)
 			.map(lane => {
 				const laneTasks = this.state.tasks.filter(task => task.lane === lane.id);
-				return <Lane key={lane.id} id={lane.id} title={lane.title} tasks={laneTasks} onLaneDrop={this.onLaneDrop} onTaskDrop={this.onTaskDrop} onRemove={this.onLaneRemove} onEdit={this.onLaneEdit} />;
+				return <Lane key={lane.id} id={lane.id} title={lane.title} tasks={laneTasks} onLaneDrop={this.onLaneDrop} onTaskDrop={this.onTaskDrop} onRemove={this.onLaneHide} onEdit={this.onLaneEdit} />;
 			});
 
 		return (
