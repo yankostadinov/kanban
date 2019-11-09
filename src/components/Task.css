@@ -1,0 +1,18 @@
+.task {
+	background-color: white;
+	border: 1px solid grey;
+	height: 100px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	padding: 4px;
+}
+
+.task .assignee {
+	align-self: flex-end;
+}
+
+.task:hover {
+	cursor: pointer;
+	background-color: beige;
+}

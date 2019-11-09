@@ -1,0 +1,37 @@
+{
+	"root": true,
+	"env": {
+		"browser": true
+	},
+	"extends": [
+		"eslint:recommended",
+		"plugin:react/recommended"
+	],
+	"parserOptions": {
+			"ecmaVersion": 2017,
+			"sourceType": "module"
+	},
+	"rules": {
+		"no-multiple-empty-lines": "warn",
+		"indent": ["error", "tab", { "SwitchCase": 1 }],
+		"quotes": ["error", "single"],
+		"semi": ["error", "always"],
+		"no-undef": ["off", "false"],
+		"no-console": "warn",
+		"no-multi-spaces": "error",
+		"block-spacing": "error",
+		"brace-style": ["error", "1tbs"],
+		"func-call-spacing": ["error", "never"],
+		"object-curly-spacing": ["error", "always"],
+		"space-in-parens": ["error", "never"],
+		"space-before-blocks": ["error", "always"],
+		"space-before-function-paren": ["error", "never"],
+		"no-trailing-spaces": ["error"],
+		"max-lines": ["warn", 300],
+		"max-lines-per-function": ["warn", 25],
+		"complexity": ["warn", 6],
+		"max-nested-callbacks": ["warn", 2],
+		"max-depth": ["warn", 3],
+		"no-param-reassign": "error"
+	}
+}

@@ -1,0 +1,74 @@
+{
+	"lanes": [
+		{
+			"id": "41f78582-d69c-4926-8234-ecc958482a8f",
+			"title": "To Do"
+		},
+		{
+			"id": "d938b558-cd92-4bef-89c4-ab4d1d726f73",
+			"title": "In Progress"
+		},
+		{
+			"id": "f6e23f34-37bb-4e95-9ba3-fa4aa4cab4f6",
+			"title": "Done"
+		}
+	],
+	"tasks": [
+		{
+			"id": "9e5dbcce-98c7-4f1f-8957-c6d770efa50e",
+			"date": 1572805598639,
+			"subject": "Create basic structure",
+			"lane": "f6e23f34-37bb-4e95-9ba3-fa4aa4cab4f6",
+			"assignee": "Yan Kostadinov"
+		},
+		{
+			"id": "44d10543-c804-4c82-acfa-53933aca005d",
+			"date": 1572805598639,
+			"subject": "Save and restore data",
+			"lane": "41f78582-d69c-4926-8234-ecc958482a8f",
+			"assignee": "Yan Kostadinov"
+		},
+		{
+			"id": "71574b29-5137-4014-81ca-955b7a40ac7f",
+			"date": 1572805598639,
+			"subject": "Add lane drag and drop",
+			"lane": "f6e23f34-37bb-4e95-9ba3-fa4aa4cab4f6",
+			"assignee": "Yan Kostadinov"
+		},
+		{
+			"id": "4ea67431-6fa6-4a2e-b230-6f6b134222db",
+			"date": 1572805598639,
+			"subject": "Add task drag and drop",
+			"lane": "f6e23f34-37bb-4e95-9ba3-fa4aa4cab4f6",
+			"assignee": "Yan Kostadinov"
+		},
+		{
+			"id": "b62d913b-c9e3-4d99-8499-fe365f760e2f",
+			"date": 1572805598639,
+			"subject": "Edit/remove lane",
+			"lane": "41f78582-d69c-4926-8234-ecc958482a8f",
+			"assignee": "Yan Kostadinov"
+		},
+		{
+			"id": "b74a4396-2baf-4b1d-aeee-046de66e98d3",
+			"date": 1572805598639,
+			"subject": "Add new task button",
+			"lane": "f6e23f34-37bb-4e95-9ba3-fa4aa4cab4f6",
+			"assignee": "Yan Kostadinov"
+		},
+		{
+			"id": "3b3b097e-c3a2-4e19-aaa7-e45e0eb65b4c",
+			"date": 1572805598639,
+			"subject": "Add new task modal",
+			"lane": "41f78582-d69c-4926-8234-ecc958482a8f",
+			"assignee": "Yan Kostadinov"
+		},
+		{
+			"id": "c93167d5-894d-4769-b3b5-7e2da0f8136a",
+			"date": 1572805598639,
+			"subject": "Edit/remove task",
+			"lane": "41f78582-d69c-4926-8234-ecc958482a8f",
+			"assignee": "Yan Kostadinov"
+		}
+	]
+}

@@ -1,0 +1,22 @@
+.lane {
+	background-color: lightgrey;
+	text-align: center;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	min-height: 400px;
+	width: 200px;
+}
+
+.lane.dragging {
+	outline: 5px solid lightblue;
+}
+
+.lane.dropping {
+	outline: 5px dashed pink;
+}
+
+.title {
+	height: 50px;
+	padding: 10px;
+	cursor: move;
+}
