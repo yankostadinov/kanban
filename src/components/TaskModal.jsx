@@ -13,11 +13,13 @@ const TaskModal = ({ onSubmit, lanes }) => {
 
 	return (
 		<form className="task-modal" onSubmit={submitHandler}>
-			<span>Subject:<input type="text" name="subject" id="subject" placeholder="Untitled Task" /></span>
-			<span>Assignee:<input type="text" name="assignee" id="assignee" placeholder="Yan Kostadinov" /></span>
-			<select name="lane" id="lane">
-				{lanes.map(lane => <option value={lane.id} key={lane.id}>{lane.title}</option>)}
-			</select>
+			<div className="form-details">
+				<span>Subject:</span><input type="text" name="subject" id="subject" placeholder="Untitled Task" />
+				<span>Assignee:</span><input type="text" name="assignee" id="assignee" placeholder="Yan Kostadinov" />
+				<span>Lane:</span><select name="lane" id="lane">
+					{lanes.map(lane => <option value={lane.id} key={lane.id}>{lane.title}</option>)}
+				</select>
+			</div>
 			<input type="submit" value="Create task"/>
 		</form>
 	);

@@ -1,5 +1,18 @@
-.modal {
+.full-screen-modal {
+	display: flex;
 	position: fixed;
 	width: 100%;
 	height: 100%;
+	justify-content: center;
+}
+
+.full-screen-modal .fade {
+	z-index: 0;
+}
+.full-screen-modal .modal {
+	z-index: 1;
+	margin: auto;
+	border-radius: 5px;
+	padding: 15px;
+	background-color: white;
 }

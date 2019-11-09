@@ -2,21 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './Fade.css';
 import Fade from './Fade.jsx';
-import TaskModal from './TaskModal.jsx';
 import './FullScreenModal.css';
 
-const FullScreenModal = ({ onSubmit, lanes }) => (
-	<div className="modal">
+const FullScreenModal = ({ children }) => (
+	<div className="full-screen-modal">
 		<Fade />
-		<TaskModal onSubmit={onSubmit} lanes={lanes} />
+		<div className="modal">{children}</div>
 	</div>
 );
 
 FullScreenModal.displayName = 'FullScreenModal';
-FullScreenModal.propTypes = {
-	children: PropTypes.node,
-	onSubmit: PropTypes.func,
-	lanes: PropTypes.arrayOf(PropTypes.object),
-};
+FullScreenModal.propTypes = { children: PropTypes.node };
 
 export default FullScreenModal;

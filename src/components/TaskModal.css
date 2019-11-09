@@ -1,6 +1,13 @@
 form {
-	position: absolute;
-	top: 0;
 	display: flex;
 	flex-direction: column;
+}
+
+form .form-details {
+	display: grid;
+	grid-template-columns: 50% 50%;
+}
+
+form input[type="submit"] {
+	margin-top: 10px;
 }

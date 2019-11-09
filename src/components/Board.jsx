@@ -3,6 +3,7 @@ import Axios from 'axios';
 import './Board.css';
 import Lane from './Lane.jsx';
 import FullScreenModal from './FullScreenModal.jsx';
+import TaskModal from './TaskModal.jsx';
 
 class Board extends Component {
 	constructor(props) {
@@ -91,7 +92,10 @@ class Board extends Component {
 
 		return (
 			<div id="board">
-				{this.state.adding && <FullScreenModal onSubmit={this.addTask} lanes={this.state.lanes}/>}
+				{this.state.adding &&
+					<FullScreenModal>
+						<TaskModal onSubmit={this.addTask} lanes={this.state.lanes} />
+					</FullScreenModal>}
 				<div className="buttons">
 					<button onClick={() => this.setState({ adding: true })}>Add task</button>
 					<button onClick={this.addLane}>Add lane</button>
