@@ -19,21 +19,9 @@
       "id": 3
     },
     {
-      "title": "New Lane",
+      "title": "To Delete",
       "order": 4,
-      "hidden": true,
-      "id": 4
-    },
-    {
-      "title": "New Lane",
-      "order": 5,
-      "id": 5,
-      "hidden": true
-    },
-    {
-      "title": "New Lane",
-      "order": 6,
-      "id": 6,
+      "id": 4,
       "hidden": true
     }
   ],
@@ -91,7 +79,7 @@
       "id": 8,
       "date": 1572805598639,
       "subject": "Edit/remove task",
-      "lane": 1,
+      "lane": 4,
       "assignee": "Yan Kostadinov"
     }
   ]

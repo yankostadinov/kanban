@@ -11,6 +11,7 @@ class Board extends Component {
 
 		this.state = {
 			adding: false,
+			showHidden: false,
 			lanes: [],
 			tasks: [],
 		};
@@ -19,7 +20,7 @@ class Board extends Component {
 		this.addTask = this.addTask.bind(this);
 		this.onLaneDrop = this.onLaneDrop.bind(this);
 		this.onTaskDrop = this.onTaskDrop.bind(this);
-		this.onLaneHide = this.onLaneHide.bind(this);
+		this.toggleLane = this.toggleLane.bind(this);
 		this.onLaneEdit = this.onLaneEdit.bind(this);
 	}
 
@@ -65,12 +66,12 @@ class Board extends Component {
 		this.setState({ tasks });
 	}
 
-	onLaneHide(laneId) {
+	toggleLane(laneId) {
 		const lanes = this.state.lanes.slice();
-		const laneToHide = lanes.find(lane => lane.id === laneId);
-		laneToHide.hidden = true;
+		const laneToToggle = lanes.find(lane => lane.id === laneId);
+		laneToToggle.hidden = !laneToToggle.hidden;
 
-		Axios.put(`http://localhost:3000/lanes/${laneId}`, laneToHide);
+		Axios.put(`http://localhost:3000/lanes/${laneId}`, laneToToggle);
 		this.setState({ lanes });
 	}
 
@@ -87,11 +88,11 @@ class Board extends Component {
 
 	render() {
 		const lanes = this.state.lanes
-			.filter(lane => !lane.hidden)
+			.filter(lane => this.state.showHidden || !lane.hidden)
 			.sort((lane1, lane2) => lane1.order - lane2.order)
 			.map(lane => {
 				const laneTasks = this.state.tasks.filter(task => task.lane === lane.id);
-				return <Lane key={lane.id} id={lane.id} title={lane.title} tasks={laneTasks} onLaneDrop={this.onLaneDrop} onTaskDrop={this.onTaskDrop} onRemove={this.onLaneHide} onEdit={this.onLaneEdit} />;
+				return <Lane key={lane.id} id={lane.id} title={lane.title} tasks={laneTasks} onLaneDrop={this.onLaneDrop} onTaskDrop={this.onTaskDrop} onToggle={this.toggleLane} onEdit={this.onLaneEdit} />;
 			});
 
 		return (
@@ -103,6 +104,7 @@ class Board extends Component {
 				<div className="buttons">
 					<button onClick={() => this.setState({ adding: true })}>Add task</button>
 					<button onClick={this.addLane}>Add lane</button>
+					<button onClick={() => this.setState({ showHidden: !this.state.showHidden })}>{this.state.showHidden ? 'Hide' : 'Show'} hidden lanes</button>
 				</div>
 				<div className="lanes">{lanes}</div>
 			</div>

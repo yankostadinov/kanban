@@ -4,7 +4,7 @@ import './Lane.css';
 import Task from './Task.jsx';
 import EditableText from './EditableText.jsx';
 
-const Lane = ({ tasks, id, title, onLaneDrop, onTaskDrop, onRemove, onEdit }) => {
+const Lane = ({ tasks, id, title, onLaneDrop, onTaskDrop, onToggle, onEdit }) => {
 	const [dragging, setDragging] = useState(false);
 	const [dropping, setDropping] = useState(false);
 	const titleRef = createRef();
@@ -34,7 +34,7 @@ const Lane = ({ tasks, id, title, onLaneDrop, onTaskDrop, onRemove, onEdit }) =>
 		if (taskId) onTaskDrop(taskId, id);
 	};
 
-	const removeHandler = () => onRemove(id);
+	const toggleHandler = () => onToggle(id);
 	const editHandler = newTitle => onEdit(id, newTitle);
 
 	const draggingClass = dragging ? 'dragging' : '';
@@ -46,7 +46,7 @@ const Lane = ({ tasks, id, title, onLaneDrop, onTaskDrop, onRemove, onEdit }) =>
 	return (
 		<div className={classes} onDrop={onDrop} onDragOver={onDragOver} onDragLeave={onDragLeave}>
 			<div className="title" ref={titleRef} draggable={true} onDragStart={onDragStart} onDragEnd={onDragEnd}>
-				<EditableText value={title} onRemove={removeHandler} onEdit={editHandler} />
+				<EditableText value={title} onToggle={toggleHandler} onEdit={editHandler} />
 			</div>
 			<div className="tasks">{taskComponents}</div>
 		</div>
@@ -59,7 +59,7 @@ Lane.propTypes = {
 	id: PropTypes.number.isRequired,
 	onLaneDrop: PropTypes.func.isRequired,
 	onTaskDrop: PropTypes.func.isRequired,
-	onRemove: PropTypes.func.isRequired,
+	onToggle: PropTypes.func.isRequired,
 	onEdit: PropTypes.func.isRequired,
 	tasks: PropTypes.arrayOf(Task).isRequired,
 };
