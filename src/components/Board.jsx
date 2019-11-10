@@ -1,115 +1,108 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import './Board.css';
 import Lane from './Lane.jsx';
 import FullScreenModal from './FullScreenModal.jsx';
 import TaskModal from './TaskModal.jsx';
 
-class Board extends Component {
-	constructor(props) {
-		super(props);
+const Board = () => {
+	const [adding, setAdding] = useState(false);
+	const [showHidden, setShowHidden] = useState(false);
+	const [lanes, setLanes] = useState([]);
+	const [tasks, setTasks] = useState([]);
 
-		this.state = {
-			adding: false,
-			showHidden: false,
-			lanes: [],
-			tasks: [],
+	useEffect(() => {
+		const fetchData = async() => {
+			const tasksResponse = await Axios.get('http://localhost:3000/tasks');
+			const lanesResponse = await Axios.get('http://localhost:3000/lanes');
+
+			setLanes(lanesResponse.data);
+			setTasks(tasksResponse.data);
 		};
 
-		this.addLane = this.addLane.bind(this);
-		this.addTask = this.addTask.bind(this);
-		this.onLaneDrop = this.onLaneDrop.bind(this);
-		this.onTaskDrop = this.onTaskDrop.bind(this);
-		this.toggleLane = this.toggleLane.bind(this);
-		this.onLaneEdit = this.onLaneEdit.bind(this);
-	}
+		fetchData();
+	}, []);
 
-	async componentDidMount() {
-		const tasksResponse = await Axios.get('http://localhost:3000/tasks');
-		const lanesResponse = await Axios.get('http://localhost:3000/lanes');
-
-		this.setState({ lanes: lanesResponse.data, tasks: tasksResponse.data });
-	}
-
-	async addLane() {
-		const newLane = { title: 'New Lane', order: this.state.lanes.length + 1 };
+	const addLane = async() => {
+		const newLane = { title: 'New Lane', order: lanes.length + 1 };
 		const laneResponse = await Axios.post('http://localhost:3000/lanes', newLane);
 
-		this.setState({ lanes: this.state.lanes.concat(laneResponse.data) });
-	}
+		setLanes(lanes.concat(laneResponse.data));
+	};
 
-	async addTask({ date = Date.now(), lane, subject, assignee } = {}) {
+	const addTask = async({ date = Date.now(), lane, subject, assignee } = {}) => {
 		const newTask = { date, lane, subject, assignee };
 		const taskResponse = await Axios.post('http://localhost:3000/tasks', newTask);
 
-		this.setState({ tasks: this.state.tasks.concat(taskResponse.data), adding: false });
-	}
+		setTasks(tasks.concat(taskResponse.data));
+		setAdding(false);
+	};
 
-	onLaneDrop(fromId, toId) {
-		const lanes = this.state.lanes.slice();
-		const fromLane = lanes.find(lane => lane.id === fromId);
-		const toLane = lanes.find(lane => lane.id === toId);
+	const onLaneDrop = (fromId, toId) => {
+		const updatedLanes = lanes.slice();
+		const fromLane = updatedLanes.find(lane => lane.id === fromId);
+		const toLane = updatedLanes.find(lane => lane.id === toId);
 
 		[fromLane.order, toLane.order] = [toLane.order, fromLane.order];
 
 		Axios.all([Axios.put(`http://localhost:3000/lanes/${fromLane.id}`, fromLane), Axios.put(`http://localhost:3000/lanes/${toLane.id}`, toLane)]);
-		this.setState({ lanes });
-	}
+		setLanes(updatedLanes);
+	};
 
-	onTaskDrop(taskId, newLaneId) {
-		const tasks = this.state.tasks.slice();
-		const taskToMove = tasks.find(task => task.id === taskId);
+	const onTaskDrop = (taskId, newLaneId) => {
+		const updatedTasks = tasks.slice();
+		const taskToMove = updatedTasks.find(task => task.id === taskId);
 
 		taskToMove.lane = newLaneId;
 
 		Axios.put(`http://localhost:3000/tasks/${taskToMove.id}`, taskToMove);
-		this.setState({ tasks });
-	}
+		setTasks(updatedTasks);
+	};
 
-	toggleLane(laneId) {
-		const lanes = this.state.lanes.slice();
-		const laneToToggle = lanes.find(lane => lane.id === laneId);
+	const toggleLane = laneId => {
+		const updatedLanes = lanes.slice();
+		const laneToToggle = updatedLanes.find(lane => lane.id === laneId);
 		laneToToggle.hidden = !laneToToggle.hidden;
 
 		Axios.put(`http://localhost:3000/lanes/${laneId}`, laneToToggle);
-		this.setState({ lanes });
-	}
+		setLanes(updatedLanes);
+	};
 
-	onLaneEdit(laneId, newTitle) {
+	const onLaneEdit = (laneId, newTitle) => {
 		if (!newTitle) return;
 
-		const lanes = this.state.lanes.slice();
-		const renamedLane = lanes.find(lane => lane.id === laneId);
+		const updatedLanes = lanes.slice();
+		const renamedLane = updatedLanes.find(lane => lane.id === laneId);
 		renamedLane.title = newTitle;
 
 		Axios.put(`http://localhost:3000/lanes/${laneId}`, renamedLane);
-		this.setState({ lanes });
-	}
+		setLanes(updatedLanes);
+	};
 
-	render() {
-		const lanes = this.state.lanes
-			.filter(lane => this.state.showHidden || !lane.hidden)
-			.sort((lane1, lane2) => lane1.order - lane2.order)
-			.map(lane => {
-				const laneTasks = this.state.tasks.filter(task => task.lane === lane.id);
-				return <Lane key={lane.id} id={lane.id} title={lane.title} tasks={laneTasks} onLaneDrop={this.onLaneDrop} onTaskDrop={this.onTaskDrop} onToggle={this.toggleLane} onEdit={this.onLaneEdit} />;
-			});
+	const laneComponents = lanes
+		.filter(lane => showHidden || !lane.hidden)
+		.sort((lane1, lane2) => lane1.order - lane2.order)
+		.map(lane => {
+			const laneTasks = tasks.filter(task => task.lane === lane.id);
+			return <Lane key={lane.id} id={lane.id} title={lane.title} tasks={laneTasks} onLaneDrop={onLaneDrop} onTaskDrop={onTaskDrop} onToggle={toggleLane} onEdit={onLaneEdit} />;
+		});
 
-		return (
-			<div id="board">
-				{this.state.adding &&
-					<FullScreenModal onClose={() => this.setState({ adding: false })}>
-						<TaskModal onSubmit={this.addTask} onCancel={() => this.setState({ adding: false })} lanes={this.state.lanes} />
-					</FullScreenModal>}
-				<div className="buttons">
-					<button onClick={() => this.setState({ adding: true })}>Add task</button>
-					<button onClick={this.addLane}>Add lane</button>
-					<button onClick={() => this.setState({ showHidden: !this.state.showHidden })}>{this.state.showHidden ? 'Hide' : 'Show'} hidden lanes</button>
-				</div>
-				<div className="lanes">{lanes}</div>
+	return (
+		<div id="board">
+			{adding &&
+				<FullScreenModal onClose={() => setAdding(false)}>
+					<TaskModal onSubmit={addTask} onCancel={() => setAdding(false)} lanes={lanes} />
+				</FullScreenModal>}
+			<div className="buttons">
+				<button onClick={() => setAdding(true)}>Add task</button>
+				<button onClick={addLane}>Add lane</button>
+				<button onClick={() => setShowHidden(!showHidden)}>{showHidden ? 'Hide' : 'Show'} hidden lanes</button>
 			</div>
-		);
-	}
-}
+			<div className="lanes">{laneComponents}</div>
+		</div>
+	);
+};
+
+Board.displayName = 'Board';
 
 export default Board;
