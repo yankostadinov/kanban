@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { faEdit, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faToggleOff, faToggleOn } from '@fortawesome/free-solid-svg-icons';
 import IconButton from './IconButton.jsx';
 import './EditableText.css';
 
-const EditableText = ({ onToggle, onEdit, value }) => {
+const EditableText = ({ onToggle, onEdit, value, toggled }) => {
 	const [editing, setEditing] = useState(false);
 
 	const checkKeys = event => ['Escape', 'Enter'].includes(event.key) && handleEditEnd(event);
@@ -19,7 +19,7 @@ const EditableText = ({ onToggle, onEdit, value }) => {
 			{!editing && <span>{value}</span>}
 			<div className="buttons">
 				<IconButton icon={faEdit} onClick={setEditing.bind(null, true)} />
-				<IconButton icon={faEyeSlash} onClick={onToggle} />
+				<IconButton icon={toggled ? faToggleOn : faToggleOff} onClick={onToggle} />
 			</div>
 		</div>
 	);

@@ -84,7 +84,7 @@ const Board = () => {
 		.sort((lane1, lane2) => lane1.order - lane2.order)
 		.map(lane => {
 			const laneTasks = tasks.filter(task => task.lane === lane.id);
-			return <Lane key={lane.id} id={lane.id} title={lane.title} tasks={laneTasks} onLaneDrop={onLaneDrop} onTaskDrop={onTaskDrop} onToggle={toggleLane} onEdit={onLaneEdit} />;
+			return <Lane key={lane.id} id={lane.id} title={lane.title} tasks={laneTasks} hidden={lane.hidden} onLaneDrop={onLaneDrop} onTaskDrop={onTaskDrop} onToggle={toggleLane} onEdit={onLaneEdit} />;
 		});
 
 	return (

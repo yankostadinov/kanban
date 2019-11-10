@@ -4,7 +4,7 @@ import './Lane.css';
 import Task from './Task.jsx';
 import EditableText from './EditableText.jsx';
 
-const Lane = ({ tasks, id, title, onLaneDrop, onTaskDrop, onToggle, onEdit }) => {
+const Lane = ({ tasks, id, title, onLaneDrop, onTaskDrop, onToggle, onEdit, hidden }) => {
 	const [dragging, setDragging] = useState(false);
 	const [dropping, setDropping] = useState(false);
 	const titleRef = createRef();
@@ -37,14 +37,15 @@ const Lane = ({ tasks, id, title, onLaneDrop, onTaskDrop, onToggle, onEdit }) =>
 	const toggleHandler = () => onToggle(id);
 	const editHandler = newTitle => onEdit(id, newTitle);
 
+	const hiddenClass = hidden ? 'hidden' : '';
 	const draggingClass = dragging ? 'dragging' : '';
 	const droppingClass = !dragging && dropping ? 'dropping' : '';
-	const classes = `lane ${draggingClass} ${droppingClass}`;
+	const classes = `lane ${hiddenClass} ${draggingClass} ${droppingClass}`;
 
 	return (
 		<div className={classes} onDrop={onDrop} onDragOver={onDragOver} onDragLeave={onDragLeave}>
 			<div className="title" ref={titleRef} draggable={true} onDragStart={onDragStart} onDragEnd={onDragEnd}>
-				<EditableText value={title} onToggle={toggleHandler} onEdit={editHandler} />
+				<EditableText value={title} onToggle={toggleHandler} toggled={!hidden} onEdit={editHandler} />
 			</div>
 			<div className="tasks">{tasks.map(task =>
 				<Task subject={task.subject} key={task.id} id={task.id} assignee={task.assignee} />

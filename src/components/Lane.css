@@ -7,6 +7,10 @@
 	width: 200px;
 }
 
+.lane.hidden {
+	opacity: 0.5;
+}
+
 .lane.dragging {
 	outline: 5px solid lightblue;
 }
