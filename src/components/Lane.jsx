@@ -15,7 +15,6 @@ const Lane = ({ tasks, id, title, onLaneDrop, onTaskDrop, onToggle, onEdit }) =>
 		event.dataTransfer.setData('text/lane-id', id);
 		setDragging(true);
 	};
-	const onDragEnd = () => setDragging(false);
 	const onDragOver = event => {
 		if (!event.dataTransfer.types.includes('text/lane-id') && !event.dataTransfer.types.includes('text/task-id')) return;
 
@@ -23,6 +22,7 @@ const Lane = ({ tasks, id, title, onLaneDrop, onTaskDrop, onToggle, onEdit }) =>
 		setDropping(true);
 	};
 	const onDragLeave = () => setDropping(false);
+	const onDragEnd = () => setDragging(false);
 	const onDrop = event => {
 		event.preventDefault();
 		setDropping(false);
@@ -41,14 +41,14 @@ const Lane = ({ tasks, id, title, onLaneDrop, onTaskDrop, onToggle, onEdit }) =>
 	const droppingClass = !dragging && dropping ? 'dropping' : '';
 	const classes = `lane ${draggingClass} ${droppingClass}`;
 
-	const taskComponents = tasks.map(task => <Task subject={task.subject} key={task.id} id={task.id} assignee={task.assignee} />);
-
 	return (
 		<div className={classes} onDrop={onDrop} onDragOver={onDragOver} onDragLeave={onDragLeave}>
 			<div className="title" ref={titleRef} draggable={true} onDragStart={onDragStart} onDragEnd={onDragEnd}>
 				<EditableText value={title} onToggle={toggleHandler} onEdit={editHandler} />
 			</div>
-			<div className="tasks">{taskComponents}</div>
+			<div className="tasks">{tasks.map(task =>
+				<Task subject={task.subject} key={task.id} id={task.id} assignee={task.assignee} />
+			)}</div>
 		</div>
 	);
 };
