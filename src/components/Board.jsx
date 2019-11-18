@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import Axios from 'axios';
 import './Board.css';
 import Lane from './Lane.jsx';
 import FullScreenModal from './FullScreenModal.jsx';
 import TaskModal from './TaskModal.jsx';
+import laneService from '../services/lanes';
+import taskService from '../services/tasks';
 
 const Board = () => {
 	const [adding, setAdding] = useState(false);
@@ -13,28 +14,28 @@ const Board = () => {
 
 	useEffect(() => {
 		const fetchData = async() => {
-			const tasksResponse = await Axios.get('http://localhost:3000/tasks');
-			const lanesResponse = await Axios.get('http://localhost:3000/lanes');
+			const allTasks = await taskService.getAll();
+			const allLanes = await laneService.getAll();
 
-			setLanes(lanesResponse.data);
-			setTasks(tasksResponse.data);
+			setLanes(allLanes);
+			setTasks(allTasks);
 		};
 
 		fetchData();
 	}, []);
 
 	const addLane = async() => {
-		const newLane = { title: 'New Lane', order: lanes.length + 1 };
-		const laneResponse = await Axios.post('http://localhost:3000/lanes', newLane);
+		const laneData = { title: 'New Lane', order: lanes.length + 1 };
+		const newLane = await laneService.create(laneData);
 
-		setLanes(lanes.concat(laneResponse.data));
+		setLanes(lanes.concat(newLane));
 	};
 
-	const addTask = async({ date = Date.now(), lane, subject, assignee } = {}) => {
-		const newTask = { date, lane, subject, assignee };
-		const taskResponse = await Axios.post('http://localhost:3000/tasks', newTask);
+	const addTask = async({ lane, subject, assignee } = {}) => {
+		const taskData = { lane, subject, assignee };
+		const newTask = await taskService.create(taskData);
 
-		setTasks(tasks.concat(taskResponse.data));
+		setTasks(tasks.concat(newTask));
 		setAdding(false);
 	};
 
@@ -45,7 +46,7 @@ const Board = () => {
 
 		[fromLane.order, toLane.order] = [toLane.order, fromLane.order];
 
-		Axios.all([Axios.put(`http://localhost:3000/lanes/${fromLane.id}`, fromLane), Axios.put(`http://localhost:3000/lanes/${toLane.id}`, toLane)]);
+		Promise.all([laneService.update(fromLane.id, fromLane), laneService.update(toLane.id, toLane)]);
 		setLanes(updatedLanes);
 	};
 
@@ -54,17 +55,18 @@ const Board = () => {
 		const taskToMove = updatedTasks.find(task => task.id === taskId);
 
 		taskToMove.lane = newLaneId;
+		taskService.update(taskToMove.id, taskToMove);
 
-		Axios.put(`http://localhost:3000/tasks/${taskToMove.id}`, taskToMove);
 		setTasks(updatedTasks);
 	};
 
 	const toggleLane = laneId => {
 		const updatedLanes = lanes.slice();
 		const laneToToggle = updatedLanes.find(lane => lane.id === laneId);
-		laneToToggle.hidden = !laneToToggle.hidden;
 
-		Axios.put(`http://localhost:3000/lanes/${laneId}`, laneToToggle);
+		laneToToggle.hidden = !laneToToggle.hidden;
+		laneService.update(laneId, laneToToggle);
+
 		setLanes(updatedLanes);
 	};
 
@@ -73,9 +75,10 @@ const Board = () => {
 
 		const updatedLanes = lanes.slice();
 		const renamedLane = updatedLanes.find(lane => lane.id === laneId);
-		renamedLane.title = newTitle;
 
-		Axios.put(`http://localhost:3000/lanes/${laneId}`, renamedLane);
+		renamedLane.title = newTitle;
+		laneService.update(laneId, renamedLane);
+
 		setLanes(updatedLanes);
 	};
 
