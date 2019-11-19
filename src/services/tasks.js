@@ -1,5 +1,5 @@
 import Axios from 'axios';
-const baseUrl = 'http://localhost:3001/tasks';
+const baseUrl = '/tasks';
 
 const sendRequest = async(request) => {
 	const response = await request();

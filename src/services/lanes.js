@@ -1,5 +1,5 @@
 import Axios from 'axios';
-const baseUrl = 'http://localhost:3001/lanes';
+const baseUrl = '/lanes';
 
 const sendRequest = async(request) => {
 	const response = await request();
