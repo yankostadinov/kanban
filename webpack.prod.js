@@ -1,19 +1,22 @@
 const path = require('path');
-const CompressionPlugin = require('compression-webpack-plugin');
 require('babel-polyfill');
 
 module.exports = {
+	node: {
+		fs: 'empty'
+	},
 	entry: ['babel-polyfill', './src/index.js'],
-	mode: 'production',
+	mode: 'development',
 	output: {
 		filename: 'main.js',
 		path: path.resolve(__dirname, 'dist'),
 	},
-	plugins: [
-		new CompressionPlugin(),
-	],
 	module: {
 		rules: [
+			{
+				test: /\.css$/i,
+				use: ['style-loader', 'css-loader']
+			},
 			{
 				test: /\.(js|jsx)$/,
 				exclude: /node_modules/,
