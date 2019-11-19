@@ -1,5 +1,5 @@
 import Axios from 'axios';
-const baseUrl = '/tasks';
+const baseUrl = '/api/tasks';
 
 const sendRequest = async(request) => {
 	const response = await request();

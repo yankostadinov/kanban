@@ -1,5 +1,5 @@
 import Axios from 'axios';
-const baseUrl = '/lanes';
+const baseUrl = '/api/lanes';
 
 const sendRequest = async(request) => {
 	const response = await request();
