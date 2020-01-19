@@ -28,7 +28,6 @@
 		"space-before-function-paren": ["error", "never"],
 		"no-trailing-spaces": ["error"],
 		"max-lines": ["warn", 300],
-		"max-lines-per-function": ["warn", 25],
 		"complexity": ["warn", 6],
 		"max-nested-callbacks": ["warn", 2],
 		"max-depth": ["warn", 3],

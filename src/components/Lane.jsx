@@ -27,8 +27,8 @@ const Lane = ({ tasks, id, title, onLaneDrop, onTaskDrop, onToggle, onEdit, hidd
 		event.preventDefault();
 		setDropping(false);
 
-		const laneId = parseInt(event.dataTransfer.getData('text/lane-id'));
-		const taskId = parseInt(event.dataTransfer.getData('text/task-id'));
+		const laneId = event.dataTransfer.getData('text/lane-id');
+		const taskId = event.dataTransfer.getData('text/task-id');
 
 		if (laneId) onLaneDrop(laneId, id);
 		if (taskId) onTaskDrop(taskId, id);
@@ -57,7 +57,7 @@ const Lane = ({ tasks, id, title, onLaneDrop, onTaskDrop, onToggle, onEdit, hidd
 Lane.displayName = 'Lane';
 Lane.propTypes = {
 	title: PropTypes.string.isRequired,
-	id: PropTypes.number.isRequired,
+	id: PropTypes.string.isRequired,
 	onLaneDrop: PropTypes.func.isRequired,
 	onTaskDrop: PropTypes.func.isRequired,
 	onToggle: PropTypes.func.isRequired,

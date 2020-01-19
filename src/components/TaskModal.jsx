@@ -8,7 +8,8 @@ const TaskModal = ({ onSubmit, onCancel, lanes }) => {
 		onSubmit({
 			subject: event.target.subject.value || event.target.subject.placeholder,
 			assignee: event.target.assignee.value || event.target.assignee.placeholder,
-			lane: parseInt(event.target.lane.value) });
+			lane: event.target.lane.value
+		});
 	};
 
 	return (
